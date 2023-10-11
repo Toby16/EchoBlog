@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<h1>Welcome to EchoBlog: {{ user.username }}!</h1>
 	<p><strong>{{ user.email }}</strong></p>
 	<hr>
 	{% for post in posts %}
