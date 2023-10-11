@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+	<strong> Login to your account!</strong>
+	<form action="" method="post" novalidate>
+	{{ form.hidden_tag() }} <!--Flask's way of taking care of csrf attacks -->
+	<p>
+		{{ form.username.label }}
+		<br>
+		{{ form.username(size=32) }}
+		<div>
+			{% for error in form.username.errors %}
+			<span style="border: 1px solid red; border-radius: 15px;
+				color: red; padding: 3px 6px">
+				{{error}}
+			</span>
+			{% endfor %}
+		</div>
+	</p>
+	<p>
+		{{ form.password.label }}
+		<br>
+		{{ form.password(size=32) }}
+		<div>
+			{% for error in form.password.errors %}
+			<span style="border: 1px solid red;
+				border-radius: 15px; color: red;
+				padding: 3px 6px">
+				{{error}}
+			</span>
+			{% endfor %}
+		</div>
+	</p>
+	{{ form.remember_me() }} <strong>{{ form.remember_me.label }}</strong>
+	<p>{{ form.submit() }}</p>
+	</form>
+</div>
+{% endblock %}
