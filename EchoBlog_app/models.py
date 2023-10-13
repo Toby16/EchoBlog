@@ -29,7 +29,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey("user.id"))
 
     def __repr__(self):
-        if len(self.body) <= 20:
+        if len(self.body) <= 60:
             return "post -> '{}'".format(self.body)
-        return "post -> '{}'".format(self.body[:20] + "...")
+        return "post -> '{}'".format(self.body[:60] + "...")
 
