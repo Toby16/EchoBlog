@@ -1,5 +1,6 @@
 from EchoBlog_app import db
 from datetime import datetime
+from werkzeug.security import (generate_password_hash, check_password_hash)
 
 
 class User(db.Model):
@@ -9,11 +10,25 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(60), unique=True, index=True)
     email = db.Column(db.String(120), unique=True, index=True)
-    password = db.Column(db.String(200))
+    password = db.Column(db.String(200))  # stores password hash
     posts = db.relationship("Post", backref="author", lazy="dynamic")
 
     def __repr__(self):
         return "user -> '{}'".format(self.username)
+
+    def set_password(self, password):
+        """
+        Set hash value of password inputed
+        """
+        self.password = generate_password_hash(password)
+        print("password hash:", self.password)
+
+    def check_password(self, password):
+        """
+        Verify password with hash value
+        """
+        return check_password_hash(self.password, password)
+
 
 
 class Post(db.Model):
