@@ -1,9 +1,10 @@
-from EchoBlog_app import db
+from EchoBlog_app import (db, login)
 from datetime import datetime
 from werkzeug.security import (generate_password_hash, check_password_hash)
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """
     Model for 'user' table in database
     """
@@ -48,3 +49,10 @@ class Post(db.Model):
             return "post -> '{}'".format(self.body)
         return "post -> '{}'".format(self.body[:60] + "...")
 
+
+@login.user_loader
+def load_user(id):
+    """
+    loader function to help the application in loading a user
+    """
+    return User.query.get(int(id))
