@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<p><strong>{{ user.email }}</strong></p>
+	<p>Hello, {{ current_user.username}} - {{ current_user.email }}</p>
 	<hr>
 	{% for post in posts %}
 	<div>

@@ -10,19 +10,23 @@
 	{% endif %}
 </head>
 <body>
-	<div>
-		<h1>ECHO BLOG</h1>
+	<div style="text-align: center">
+		<h1>EchoBlog</h1>
 	</div>
-	<hr>
+
 	<div>
 		EchoBlog: 
 		<a href="{{ url_for('index') }}">Home</a>
+		{% if current_user.is_anonymous %}
 		<a href="{{ url_for('login') }}">Login</a>
+		{% else %}
+		<a href="{{ url_for('logout') }}">Logout</a>
+		{% endif %}
 	</div>
 	<hr>
 	{% with messages = get_flashed_messages() %}
 	{% if messages %}
-	<div>
+	<div style="text-align: center">
 		{% for message in messages %}
 		<p>{{ message }}</p>
 		{% endfor %}

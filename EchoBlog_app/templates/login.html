@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
+<div style="text-align: center">
 	<strong> Login to your account!</strong>
 	<form action="" method="post" novalidate>
 	{{ form.hidden_tag() }} <!--Flask's way of taking care of csrf attacks -->
 	<p>
-		{{ form.username.label }}
+		<strong>{{ form.username.label(style="font-size: small") }}</strong>
 		<br>
 		{{ form.username(size=32) }}
 		<div>
@@ -19,7 +19,7 @@
 		</div>
 	</p>
 	<p>
-		{{ form.password.label }}
+		<strong>{{ form.password.label(style="font-size: small") }}</strong>
 		<br>
 		{{ form.password(size=32) }}
 		<div>
@@ -32,8 +32,9 @@
 			{% endfor %}
 		</div>
 	</p>
-	{{ form.remember_me() }} <strong>{{ form.remember_me.label }}</strong>
+	{{ form.remember_me() }} <strong>{{ form.remember_me.label(style="font-size: small") }}</strong>
 	<p>{{ form.submit() }}</p>
 	</form>
+	<p>New User? <a href="{{ url_for('register') }}">Click here to register</a></p>
 </div>
 {% endblock %}
