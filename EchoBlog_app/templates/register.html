@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registeration - EchoBlog</title>
+</head>
+<body style="text-align: center">
+	<h1>EchoBlog</h1>
+	<div>
+		<h4>Create an account!</h4>
+		<form action="" method="post">
+			{{ form.hidden_tag() }}
+			<p>
+			<strong>{{ form.username.label(style="font-size: small") }}</strong>:<br>
+			{{ form.username(size=32) }}<br>
+			{% for error in form.username.errors %}
+			<span style="border: 1px solid red;
+                                     border-radius: 15px; color: red;
+                                     padding: 3px 6px">
+                                     {{ error }}
+                        </span>
+                        {% endfor %}
+			</p>
+			<p>
+			<strong>{{ form.email.label(style="font-size: small") }}</strong>:<br>
+			{{ form.email(size=32) }}<br>
+			{% for error in form.email.errors %}
+			<span style="border: 1px solid red;
+				     border-radius: 15px; color: red;
+				     padding: 3px 6px">
+					{{ error }}
+			</span>
+			{% endfor %}
+			</p>
+			<p>
+			<strong>{{ form.password.label(style="font-size: small") }}</strong>:<br>
+			{{ form.password(size=32) }}<br>
+			{% for error in form.password.errors %}
+			<span style="border: 1px solid red;
+				     border-radius: 15px; color: red;
+				     padding: 3px 6px">
+                                	{{ error }}
+                        </span>
+                        {% endfor %}
+			</p>
+			<p>
+			<strong>{{ form.retype_password.label(style="font-size: small") }}</strong>:<br>
+			{{ form.retype_password(size=32) }}<br>
+			{% for error in form.retype_password.errors %}
+			<span style="border 1px solid red;
+				     border-radius: 15px; color: red;
+				     padding: 3px 6px">
+					{{ error }}
+			</span>
+			{% endfor %}
+			</p>
+			<p>{{ form.submit() }}</p>
+		</form>
+		<p>Existing User? <a href="{{ url_for('login') }}">Login to your account!</a></p>
+	</div>
+</body>
+</html>
