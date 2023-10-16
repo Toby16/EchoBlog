@@ -2,6 +2,8 @@ from EchoBlog_app import (db, login)
 from datetime import datetime
 from werkzeug.security import (generate_password_hash, check_password_hash)
 from flask_login import UserMixin
+from hashlib import md5
+
 
 
 class User(UserMixin, db.Model):
@@ -13,6 +15,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, index=True)
     password = db.Column(db.String(200))  # stores password hash
     posts = db.relationship("Post", backref="author", lazy="dynamic")
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return "user -> '{}'".format(self.username)
@@ -29,6 +33,20 @@ class User(UserMixin, db.Model):
         Verify password with hash value
         """
         return check_password_hash(self.password, password)
+
+    def avatar(self, size):
+        from random import randint
+        """
+        method to create profile photo for users using Gravatar third-service
+        """
+        digest_ = md5(self.email.lower().encode("utf-8")).hexdigest()
+
+        image_gravatar_dict = {0: "robohash", 1: "retro", 2: "wavatar", 3: "monsterid", 4: "identicon"}
+        rand_gravatar = image_gravatar_dict[randint(0, 4)]
+
+        # return the URL of the user's avatar image, scaled to the requested size in pixels
+        return "https://www.gravatar.com/avatar/{}?d={}&s={}".format(digest_, rand_gravatar, size)
+
 
 
 
