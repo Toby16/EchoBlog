@@ -1,11 +1,11 @@
 
 from flask_wtf import FlaskForm
 from wtforms import (
-        StringField, SubmitField,
+        StringField, SubmitField, TextAreaField,
         PasswordField, BooleanField
     )
 from wtforms.validators import (
-        DataRequired, Email,
+        DataRequired, Email, Length,
         EqualTo, ValidationError
     )
 from EchoBlog_app.models import User
@@ -35,10 +35,18 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Username not available!")
 
 
-    def validate_email(self, emai):
+    def validate_email(self, email):
         """
         method to check if email already exists
         """
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError("Please use a different email address!")
+
+
+class EditProfileForm(FlaskForm):
+    # To make changes to user profile
+    username = StringField("Username", validators=[DataRequired()])
+    about_me = TextAreaField("About me", validators=[Length(min=0, max=140)])
+    submit = SubmitField("Save")
+
