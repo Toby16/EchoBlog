@@ -7,14 +7,16 @@
 	<p>
 		{{ form.username.label }}<br>
 		{{ form.username(size=32) }}<br>
+		<p>
 		{% for error in form.username.errors %}
 			<span style="border: 1px solid red; border-radius: 15px;
                                 color: red; padding: 3px 6px">
                                 {{error}}
                 	</span>
 		{% endfor %}
+		</p>
 	</p>
-	<p>
+	<p style="margin-top: 30px">
 		{{ form.about_me.label }}<br>
 		{{ form.about_me(cols=50, rows=4) }}<br>
 		{% for error in form.about_me.errors %}

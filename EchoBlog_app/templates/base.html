@@ -27,7 +27,7 @@
 	<hr>
 	{% with messages = get_flashed_messages() %}
 	{% if messages %}
-	<div style="text-align: center">
+	<div style="text-align: center; color: green">
 		{% for message in messages %}
 		<p>{{ message }}</p>
 		{% endfor %}
