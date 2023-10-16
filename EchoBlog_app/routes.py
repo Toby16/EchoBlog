@@ -109,6 +109,7 @@ def register():
 
 @app.route("/user/<username>")
 @app.route("/user/<username>/")
+@login_required
 def user(username):
     """
     view function for user profile page
@@ -138,11 +139,12 @@ def before_request():
 
 @app.route("/edit_profile", methods=["GET", "POST"])
 @app.route("/edit_profile/", methods=["GET", "POST"])
+@login_required
 def edit_profile():
     """
     view function to edit user profile
     """
-    form = EditProfileForm()
+    form = EditProfileForm(current_user.username)
 
     if form.validate_on_submit():
         current_user.username = form.username.data
