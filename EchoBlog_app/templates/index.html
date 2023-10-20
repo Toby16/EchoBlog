@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-	<p>Hello, {{ current_user.username}} - {{ current_user.email }}</p>
+<div style="text-align: center">
+	<p>For you: <b>{{ current_user.username }}</b></p>
 	<hr>
+	<p>
 	{% for post in posts %}
 	<div>
 	<p><strong>{{ post.author.username }}:</strong> {{ post.body }}</p>
 	</div>
 	{% endfor %}
+	</p>
+</div>
 {% endblock %}
