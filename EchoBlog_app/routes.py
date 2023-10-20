@@ -1,18 +1,32 @@
 from EchoBlog_app import app, db
-from flask import (render_template, flash, redirect, url_for, request)
-from EchoBlog_app.forms import (LoginForm, RegistrationForm, EditProfileForm, EmptyForm)
-from EchoBlog_app.models import User
+from flask import (render_template, flash,
+                   redirect, url_for, request)
+from EchoBlog_app.forms import (LoginForm, RegistrationForm,
+                                EditProfileForm, EmptyForm, PostForm)
+from EchoBlog_app.models import User, Post
 from flask_login import (current_user, login_user,
                          logout_user, login_required)
 from werkzeug.urls import url_parse
 from datetime import datetime
 
 
-@app.route("/")
-@app.route("/index")
-@app.route("/index/")
+@app.route("/", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST"])
+@app.route("/index/", methods=["GET", "POST"])
 @login_required
 def index():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    else:
+        print(form.validate_on_submit())
+
     # Basic set up EchoBlog application
     posts = [
         {
@@ -28,7 +42,8 @@ def index():
     return render_template(
             "index.html",
             title="Home Page",
-            posts=posts
+            posts=posts,
+            form=form
     )
 
 
