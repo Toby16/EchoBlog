@@ -1,9 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div style="text-align: center">
-	<p>For you: <b>{{ current_user.username }}</b></p>
+<div style="text-align: center;">
+	<img src="{{ current_user.avatar(80) }}" style="border-radius: 30px;"><br>
+	<p style="margin: 25px 20px;">For you: <b>{{ current_user.username }}</b></p>
 	<hr>
+	<div style="margin: 30px;">
+		<form action="" method="post">
+			{{ form.hidden_tag() }}
+			<p>
+				<p>
+				{{ form.post.label }}
+				</p>
+				{{ form.post(cols=32, rows=4) }}
+				{% for error in form.post.errors %}
+				<span style="border: 1px solid red; border-radius: 15px;
+					color: red; padding: 3px 6px">
+					{{ error }}
+				</span>
+				{% endfor %}
+			</p>
+			<p> {{ form.submit() }}
+		</form>
 	<p>
 	{% for post in posts %}
 	<div>
@@ -11,5 +29,6 @@
 	</div>
 	{% endfor %}
 	</p>
+	</div>
 </div>
 {% endblock %}

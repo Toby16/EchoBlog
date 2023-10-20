@@ -17,7 +17,7 @@
 		{% endif %}
 		<p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
 		{% if user == current_user %}
-		<p>
+		<p style="margin-bottom: 35px">
 			<a href="{{ url_for('edit_profile') }}">Edit your profile</a>
 		</p>
 		{% elif not current_user.is_following(user) %}
@@ -37,7 +37,7 @@
 		{% endif %}
 	</div>
 	<hr>
-	<b>Posts</b>
+	<b>Your Posts:</b>
 	<br>
 	{% if posts %}
 	<div style="text-align: left; width: 50%; margin: auto">
