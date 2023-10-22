@@ -2,9 +2,12 @@
 
 {% block content %}
 <div style="text-align: center;">
-	<img src="{{ current_user.avatar(80) }}" style="border-radius: 30px;"><br>
-	<p style="margin: 25px 20px;">For you: <b>{{ current_user.username }}</b></p>
-	<hr>
+	<a href="{{ url_for('user', username=current_user.username) }}">
+		<img src="{{ current_user.avatar(80) }}" style="border-radius: 40px;
+								border: 1px solid silver;">
+	</a>
+	<br>
+	{% if form %}
 	<div style="margin: 30px;">
 		<form action="" method="post">
 			{{ form.hidden_tag() }}
@@ -12,7 +15,9 @@
 				<p>
 				{{ form.post.label }}
 				</p>
-				{{ form.post(cols=32, rows=4) }}
+				{{ form.post(cols=32, rows=4, style="border-radius: 10px;
+							padding: 10px;
+							box-shadow: 5px 5px 10px black;") }}
 				{% for error in form.post.errors %}
 				<span style="border: 1px solid red; border-radius: 15px;
 					color: red; padding: 3px 6px">
@@ -20,14 +25,26 @@
 				</span>
 				{% endfor %}
 			</p>
-			<p> {{ form.submit() }}
+			<p>{{ form.submit() }}</p>
 		</form>
-	<p>
-	{% for post in posts %}
-	<div>
-	<p><strong>{{ post.author.username }}:</strong> {{ post.body }}</p>
 	</div>
-	{% endfor %}
+	{% endif %}
+	{% if posts %}
+	{% if subtitle %}
+	<p><b>{{ subtitle }}</b></p>
+	{% else %}
+	<hr>
+	<p style="margin: 25px 20px;">For you: <b>{{ current_user.username }}</b></p>
+	{% endif %}
+	<hr>
+	<div style="align: center">
+		{% for post in posts %}
+			{% include 'post_.html' %}
+		{% endfor %}
+	</div>
+	{% else %}
+		<p>Welcome back. <b>Create a new post!</b></p>
+	{% endif %}
 	</p>
 	</div>
 </div>
