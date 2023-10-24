@@ -34,18 +34,31 @@
 	<p><b>{{ subtitle }}</b></p>
 	{% else %}
 	<hr>
-	<p style="margin: 25px 20px;">For you: <b>{{ current_user.username }}</b></p>
+	<p style="margin: 25px 20px;">For you & Following: <b>{{ current_user.username }}</b></p>
 	{% endif %}
 	<hr>
-	<div style="align: center">
+	<div style="display: inline; text-align: left">
 		{% for post in posts %}
 			{% include 'post_.html' %}
 		{% endfor %}
 	</div>
+	<div>
+		<p style="text-align: center">
+		{% if prev_url %}
+			<a href="{{ prev_url }}">
+				 <button> Newer Posts </button>
+			</a>
+		{% endif %}	
+		{% if next_url %}
+			<a href="{{ next_url }}">
+				 <button> Older Posts </button>
+			</a>
+		{% endif %}
+		</p>
+	</div>
 	{% else %}
 		<p>Welcome back. <b>Create a new post!</b></p>
 	{% endif %}
-	</p>
 	</div>
 </div>
 {% endblock %}

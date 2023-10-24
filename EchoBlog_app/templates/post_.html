@@ -1,14 +1,14 @@
-<div style="display: inline-block; text-align: left;">
+
 <table>
 	<tr valign="center">
 		<td>
 			<img src="{{ post.author.avatar(36) }}" style="border-radius: 18px; margin-right: 10px">
 		</td>
 	    <td>
-		    <a  style="color: gray" href="url_for('user', username=post.author.username)">
+		    <a  style="color: gray" href="{{ url_for('user', username=post.author.username) }}">
 			    <b>{{ post.author.username }}:</b></a>
-		    {{ post.body }}
+		    <br>{{ post.body }}
 	    </td>
 	</tr>
 </table>
-<div>
+
