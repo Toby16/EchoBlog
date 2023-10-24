@@ -37,7 +37,11 @@
 		{% endif %}
 	</div>
 	<hr>
+	{% if user == current_user %}
 	<b>Your Posts:</b>
+	{% else %}
+	<b>Posts:</b>
+	{% endif %}
 	<br>
 	{% if posts %}
 	<div style="display: inline; text-align: left">
