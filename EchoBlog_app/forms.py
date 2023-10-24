@@ -66,7 +66,10 @@ class EmptyForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    post = TextAreaField("What's hapening?", validators=[
+    """
+    a form for users to type new posts
+    """
+    post = TextAreaField("What's happening?", validators=[
         DataRequired(), Length(min=1, max=200)
     ])
     submit = SubmitField("Post")
