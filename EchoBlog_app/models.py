@@ -22,6 +22,11 @@ class User(UserMixin, db.Model):
     posts = db.relationship("Post", backref="author", lazy="dynamic")
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    followed = db.relationship(
+        "User", secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref("followers", lazy="dynamic"), lazy="dynamic")
 
     def __repr__(self):
         return "user -> '{}'".format(self.username)
@@ -53,13 +58,7 @@ class User(UserMixin, db.Model):
         # return "https://www.gravatar.com/avatar/{}?d={}&s={}".format(digest_, rand_gravatar, size)
         return "https://www.gravatar.com/avatar/{}?d={}&s={}".format(digest_, "robohash", size)
 
-    followed = db.relationship(
-            "User", secondary=followers,
-            primaryjoin=(followers.c.follower_id == id),
-            secondaryjoin=(followers.c.follower_id == id),
-            backref=db.backref("followers", lazy="dynamic"), lazy="dynamic"
-        )
-
+    
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
@@ -73,16 +72,8 @@ class User(UserMixin, db.Model):
             followers.c.followed_id == user.id
         ).count() > 0
 
-    def followed_post(self):
-        return Post.query.join(
-            followers, (followers.c.followed_id == Post.user_id)
-        ).filter(followers.c.follower_id == self.id).order_by(
-                Post.timestamp.desc()
-            )
-
-
-
-def followed_posts(self):
+  
+    def followed_posts(self):
         followed = Post.query.join(
             followers, (followers.c.followed_id == Post.user_id)).filter(
                 followers.c.follower_id == self.id)
