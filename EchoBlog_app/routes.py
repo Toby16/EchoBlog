@@ -22,28 +22,32 @@ def index():
         db.session.add(post)
         db.session.commit()
 
-        flash('Your post is now live!')
+        flash('Your post was sent successfully!')
         return redirect(url_for('index'))
-    else:
-        print(form.validate_on_submit())
 
-    # Basic set up EchoBlog application
-    posts = [
-        {
-            "author": {"username": "John"},
-            "body": "Beautiful day in Portland!"
-        },
-        {
-            "author": {"username": "Susan"},
-            "body": "The Avengers movie was so cool!"
-        }
-    ]
+    page = request.args.get("page", 1, type=int)
+    # posts = current_user.followed_posts().all()
+    posts = current_user.followed_posts().paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False
+    )
+    
+    if posts.has_next:
+        next_url = url_for("index", page=posts.next_num)
+    else:
+        next_url = None
+
+    if posts.has_prev:
+        prev_url = url_for("index", page=posts.prev_num)
+    else:
+        prev_url = None
 
     return render_template(
             "index.html",
             title="Home Page",
-            posts=posts,
-            form=form
+            posts=posts.items,
+            form=form,
+            next_url=next_url,
+            prev_url=prev_url
     )
 
 
@@ -122,8 +126,8 @@ def register():
     return render_template("register.html", form=form)
 
 
-@app.route("/user/<username>")
-@app.route("/user/<username>/")
+@app.route("/user/<username>", methods=["GET", "POST"])
+@app.route("/user/<username>/", methods=["GET", "POST"])
 @login_required
 def user(username):
     """
@@ -132,13 +136,27 @@ def user(username):
     username = str(username)
     user = User.query.filter_by(username=username).first_or_404()
 
-    posts = [
-        {"author": user, "body": "Hello World!, I code in Python"},
-        {"author": user, "body": "Using Flask Framework to build web applications"}
-    ]
+    page = request.args.get("page", 1, type=int)
+    posts = user.posts.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False
+    )
+    if posts.has_next:
+        next_url = url_for("user", username=user.username,
+                page=posts.next_num)
+    else:
+        next_url = None
+
+    if posts.has_prev:
+        prev_url = url_for("user", username=user.username,
+                page=posts.prev_num)
+    else:
+        prev_url = None
+
     form = EmptyForm()
 
-    return render_template("user.html", user=user, posts=posts, form=form, title="Profile")
+    return render_template("user.html", user=user,
+            posts=posts, form=form, title="Profile",
+            prev_url=prev_url, next_url=next_url)
 
 
 @app.before_request
@@ -176,13 +194,13 @@ def edit_profile():
     return render_template("edit_profile.html", title="Edit Profile", form=form)
 
 
-@app.route("/follow/<username>", methods=["POST"])
-@app.route("/follor/<username>/", methods=["POST"])
+@app.route("/follow/<username>", methods=["GET", "POST"])
+@app.route("/follow/<username>/", methods=["GET", "POST"])
 @login_required
 def follow(username):
     form = EmptyForm()
 
-    if form.validate.on_submit():
+    if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
 
         if user is None:
@@ -201,13 +219,13 @@ def follow(username):
         return redirect(url_for("index"))
 
 
-@app.route("/unfollow/<username>", methods=["POST"])
-@app.route("/unfollow/<username>/", methods=["POST"])
+@app.route("/unfollow/<username>", methods=["GET", "POST"])
+@app.route("/unfollow/<username>/", methods=["GET", "POST"])
 @login_required
 def unfollow(username):
     form = EmptyForm()
 
-    if form.validate.on_submit():
+    if form.validate_on_submit():
         user = User.query.filter_by(username=username).first()
 
         if user is None:
@@ -224,3 +242,35 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
+
+
+@app.route("/explore", methods=["GET", "POST"])
+@app.route("/explore/", methods=["GET", "POST"])
+@login_required
+def explore():
+    """
+    View function to show a global post stream from all users
+    """
+    page = request.args.get("page", 1, type=int)
+    # posts = Post.query.order_by(Post.timestamp.desc()).all()
+
+    # explore page to display 100 posts from newest to oldest in pagination
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"] + 75, error_out=False
+    )
+
+    if posts.has_next:
+        next_url = url_for("explore", page=posts.next_num)
+    else:
+        next_url = None
+
+    if posts.has_prev:
+        prev_url = url_for("explore", page=posts.prev_num)
+    else:
+        prev_url = None
+
+    return render_template("index.html", title="Explore",
+                            posts=posts.items, subtitle="Explore:",
+                            next_url=next_url, prev_url=prev_url
+    )
