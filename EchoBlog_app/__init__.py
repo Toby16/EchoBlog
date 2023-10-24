@@ -3,6 +3,8 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 
 from logging.handlers import RotatingFileHandler
 import logging
@@ -14,6 +16,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)  # Object to manage database migration
 login = LoginManager(app)  # Object to manage user logge-in state
 login.login_view = "login"  # 'login' is the view function that handles logins
+# bootstrap = Bootstrap(app) # To implement Bootstrap3 on the frontend
+# moment = Moment(app)  # to incorporate moment.js into the application
 
 from EchoBlog_app import routes, models, errors
 
