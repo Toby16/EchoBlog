@@ -8,9 +8,11 @@
 </head>
 <body style="text-align: center">
 	<h1>EchoBlog</h1>
-	<div>
+	<hr>
+	<div style="margin: 20px;">
 		<h4>Create an account!</h4>
 		<form action="" method="post">
+		<fieldset style="width: fit-content; margin: auto 30%; border-radius: 20px;">
 			{{ form.hidden_tag() }}
 			<p>
 			<strong>{{ form.username.label(style="font-size: small") }}</strong>:<br>
@@ -57,8 +59,9 @@
 			{% endfor %}
 			</p>
 			<p>{{ form.submit() }}</p>
+		</fieldset>
 		</form>
-		<p>Existing User? <a href="{{ url_for('login') }}">Login to your account!</a></p>
+		<p style="margin: 20px;">Existing User? <a href="{{ url_for('login') }}">Login to your account!</a></p>
 	</div>
 </body>
 </html>

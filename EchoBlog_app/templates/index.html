@@ -34,7 +34,7 @@
 	<p><b>{{ subtitle }}</b></p>
 	{% else %}
 	<hr>
-	<p style="margin: 25px 20px;">For you & Following: <b>{{ current_user.username }}</b></p>
+	<p style="margin: 25px 20px;">For you & following:</p>
 	{% endif %}
 	<hr>
 	<div style="display: inline; text-align: left">
@@ -57,7 +57,7 @@
 		</p>
 	</div>
 	{% else %}
-		<p>Welcome back. <b>Create a new post!</b></p>
+	<p>{{ message0 }}. <b>{{ message1 }}</b></p>
 	{% endif %}
 	</div>
 </div>
