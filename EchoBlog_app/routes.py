@@ -47,7 +47,9 @@ def index():
             posts=posts.items,
             form=form,
             next_url=next_url,
-            prev_url=prev_url
+            prev_url=prev_url,
+            message0="Welcome Back",
+            message1="Create a new post!"
     )
 
 
@@ -272,5 +274,7 @@ def explore():
 
     return render_template("index.html", title="Explore",
                             posts=posts.items, subtitle="Explore:",
-                            next_url=next_url, prev_url=prev_url
+                            next_url=next_url, prev_url=prev_url,
+                            message0="Welcome",
+                            message1="No Post available!"
     )
