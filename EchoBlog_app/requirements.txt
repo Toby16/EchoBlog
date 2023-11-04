@@ -7,7 +7,6 @@ dominate==2.8.0
 elastic-transport==8.4.1
 elasticsearch==8.10.1
 email-validator==2.0.0.post2
-Flask==3.0.0
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.6.2
 Flask-Mail==0.9.1
